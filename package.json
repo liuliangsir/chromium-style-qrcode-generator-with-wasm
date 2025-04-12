@@ -1,0 +1,21 @@
+{
+  "name": "qrcode-generator-with-wasm",
+  "version": "n/a",
+  "description": "A QR Code Generator using Rust and WebAssembly",
+  "main": "n/a",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:wasm": "wasm-pack build --target web --out-dir src"
+  },
+  "author": "liuliang@webfrontend.dev",
+  "engines": {
+    "node": ">=22.14.0",
+    "pnpm": ">=10.8.0"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.8.0",
+  "devDependencies": {
+    "vite": "^6.2.6"
+  }
+}

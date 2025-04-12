@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Generator With Wasm</title>
+    <link rel="stylesheet" href="./src/app.css" />
+  </head>
+  <body>
+    <div class="bubble-container">
+      <h2>QR Code Generator</h2>
+      <div class="qr-code-area">
+        <canvas id="qrCanvas" width="370" height="370"></canvas>
+        <div
+          id="centerErrorLabel"
+          class="error-label center-error"
+          style="display: none"
+        ></div>
+      </div>
+      <input
+        type="text"
+        id="urlInput"
+        placeholder="Enter URL or text"
+        aria-label="URL or text to encode"
+      />
+      <div
+        id="bottomErrorLabel"
+        class="error-label bottom-error"
+        style="display: none"
+      ></div>
+      <div class="button-container">
+        <span class="tooltip" title="Generates a QR code for the entered text."
+          >ℹ️</span
+        >
+        <div class="spacer"></div>
+        <button id="copyButton" disabled>Copy</button>
+        <button id="downloadButton" disabled>Download</button>
+      </div>
+    </div>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

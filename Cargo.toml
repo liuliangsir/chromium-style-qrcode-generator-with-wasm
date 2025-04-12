@@ -1,0 +1,19 @@
+[package]
+name = "qrcode-generator-with-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"] # Critical for Wasm
+
+[dependencies]
+qr_code = "2.0.0"
+wasm-bindgen = "0.2"
+console_error_panic_hook = { version = "0.1.7", optional = true }
+
+[features]
+default = ["console_error_panic_hook"] # Enable panic hook by default
+
+[profile.release]
+lto = true # Enable Link Time Optimization for smaller code size
+opt-level = 's' # Optimize for size
