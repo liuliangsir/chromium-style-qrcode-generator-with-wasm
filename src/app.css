@@ -1,29 +1,35 @@
 body {
-    font-family: sans-serif;
+    font-family: -webkit-system-font, "Segoe UI", Roboto, sans-serif; /* Match Chromium's font stack */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #f0f0f0;
     margin: 0;
+    color: #202124; /* Match Chromium's text color */
 }
 
 .bubble-container {
     background-color: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* Match Chromium's kHigh emphasis border radius */
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15); /* Match Chromium's elevation shadow */
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 280px; /* Ensure consistent width similar to Chromium */
+    width: auto;
+    max-width: 400px;
 }
 
 h2 {
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.1em;
-    color: #333;
+    margin-bottom: 16px; /* Match Chromium's DISTANCE_UNRELATED_CONTROL_VERTICAL_LARGE */
+    font-size: 15px; /* Match Chromium's dialog title font size */
+    color: #202124; /* Match Chromium's primary text color */
     text-align: center;
+    font-weight: 500; /* Match Chromium's medium weight */
+    line-height: 20px;
 }
 
 .qr-code-area {
@@ -31,31 +37,59 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 15px;
-    border: 2px solid #e0e0e0; /* Similar to kColorQrCodeBorder */
-    border-radius: 6px; /* Similar to border_radius */
-    background-color: #ffffff; /* Similar to kColorQrCodeBackground */
+    margin-bottom: 16px; /* Match Chromium's spacing */
+    border: 2px solid #dadce0; /* Match Chromium's kColorQrCodeBorder */
+    border-radius: 12px; /* Match high emphasis border radius */
+    background-color: #ffffff; /* Match Chromium's kColorQrCodeBackground */
     overflow: hidden; /* Ensure canvas stays within border */
+    width: 252px; /* 240px QR code + 2*2px border + 2*4px padding */
+    height: 252px;
+    padding: 4px; /* Additional padding inside border */
 }
 
 #qrCanvas {
     display: block; /* Remove extra space below canvas */
+    /* Enable crisp rendering on high DPI displays */
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
 }
 
 #urlInput {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 5px; /* Space before potential bottom error */
-    border: 1px solid #ccc;
+    min-width: 240px; /* Match QR code width */
+    padding: 8px 12px;
+    margin-bottom: 8px; /* Space before potential bottom error */
+    border: 1px solid #dadce0; /* Match Chromium's border color */
     border-radius: 4px;
     box-sizing: border-box; /* Include padding and border in width */
+    font-size: 13px; /* Match Chromium's input font size */
+    font-family: inherit;
+    color: #202124; /* Match Chromium's text color */
+    background-color: #ffffff;
+    line-height: 20px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#urlInput:focus {
+    outline: none;
+    border-color: #1a73e8; /* Match Chromium's focus color */
+    box-shadow: 0 0 0 1px #1a73e8; /* Focus ring like Chromium */
 }
 
 .error-label {
-    color: #d32f2f; /* Red color for errors */
-    font-size: 0.9em;
+    color: #d93025; /* Match Chromium's error color */
+    font-size: 12px; /* Match Chromium's secondary text size */
     text-align: center;
     width: 100%;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
 }
 
 .center-error {
@@ -72,6 +106,10 @@ h2 {
     box-sizing: border-box;
 }
 
+.center-error.hidden {
+    display: none;
+}
+
 .bottom-error {
     margin-bottom: 10px; /* Space between error and buttons */
     min-height: 1.2em; /* Reserve space even when hidden */
@@ -79,36 +117,59 @@ h2 {
 
 .button-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 8px; /* Match Chromium's DISTANCE_RELATED_BUTTON_HORIZONTAL */
     width: 100%;
-    margin-top: 10px; /* Adjusted from C++ code's complex margin */
+    margin-top: 8px;
 }
 
 .tooltip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #dadce0; /* Match Chromium's neutral color */
+    color: #5f6368; /* Match Chromium's secondary text */
+    font-size: 11px;
+    font-weight: bold;
     cursor: help;
-    margin-right: 10px; /* Similar to kPaddingTooltipDownloadButtonPx */
-    color: #666;
+    user-select: none;
+    margin-right: 2px; /* Extra spacing like Chromium's kPaddingTooltipDownloadButtonPx */
+}
+
+.tooltip:hover {
+    background-color: #c8c9ca;
 }
 
 .spacer {
-    flex-grow: 1;
+    flex: 1; /* Takes up remaining space to push buttons to the right */
 }
 
 button {
-    padding: 8px 15px;
-    border: 1px solid #ccc;
+    padding: 8px 16px;
+    border: 1px solid #dadce0; /* Match Chromium's button border color */
     border-radius: 4px;
-    background-color: #f8f8f8;
+    background-color: #fff; /* White background like Chromium */
     cursor: pointer;
     margin-left: 8px; /* Similar to DISTANCE_RELATED_BUTTON_HORIZONTAL */
+    font-size: 14px;
+    color: #1a73e8; /* Blue text like Chromium buttons */
+    min-width: 64px; /* Ensure buttons have minimum width */
 }
 
 button:disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.38; /* Match Chromium's disabled opacity */
+    color: #5f6368; /* Gray text for disabled state */
 }
 
 button:hover:not(:disabled) {
-    background-color: #eee;
+    background-color: #f8f9fa; /* Light gray hover like Chromium */
+    border-color: #dadce0;
+}
+
+button:active:not(:disabled) {
+    background-color: #e8f0fe; /* Light blue active state */
 }

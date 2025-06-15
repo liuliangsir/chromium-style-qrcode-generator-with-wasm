@@ -6,10 +6,23 @@ This is a high-performance QR code generator developed with Rust and WebAssembly
 
 - ⚡️ **High Performance**: Utilizing Rust and WebAssembly for high-speed QR code generation
 - 🔄 **Real-time Preview**: Instantly updates QR codes as input changes
-- 📋 **Copy Function**: One-click copying of input text
-- 💾 **Download Support**: Ability to download generated QR code images
-- 🦖 **Dinosaur Image**: Support for displaying dinosaur images within QR codes
+- 📋 **Smart Copy Function**: Copies QR code images directly to clipboard (with text fallback)
+- 💾 **Perfect Downloads**: Downloads QR codes as crisp 240x240 pixel PNG images
+- 🦖 **Chromium-Style Dino**: Supports dinosaur center images with transparent backgrounds
 - 📱 **Responsive Design**: Adapts to different device screen sizes
+- ✨ **High DPI Support**: Crystal clear rendering on retina and high-DPI displays
+- 🎯 **Chromium Compliance**: Pixel-perfect implementation matching Chrome's QR generator
+
+## Quality Improvements
+
+### Technical Specifications
+
+- **Module Style**: Circular dots (`ModuleStyle::kCircles`) matching Chrome
+- **Locator Style**: Rounded corners (`LocatorStyle::kRounded`) matching Chrome
+- **Center Image**: Dino with exact pixel data from Chromium source code
+- **Canvas Size**: 240×240 pixels (`GetQRCodeImageSize()` equivalent)
+- **Module Size**: 10 pixels per module (`kModuleSizePixels`)
+- **Dino Scale**: 4 pixels per dino pixel (`kDinoTileSizePixels`)
 
 ## Technology Stack
 
@@ -38,7 +51,7 @@ This is a high-performance QR code generator developed with Rust and WebAssembly
 2. Build the WebAssembly module
 
    ```bash
-   wasm-pack build --target web
+   pnpm build:wasm
    ```
 
 3. Install frontend dependencies
@@ -57,10 +70,10 @@ This is a high-performance QR code generator developed with Rust and WebAssembly
 
 ### How to Use
 
-1. Enter any text, URL, or data in the input field
-2. The QR code will be automatically generated and displayed on the canvas
-3. Use the "Copy" button to copy input text to the clipboard
-4. Use the "Download" button to save the QR code image locally
+1. Enter any text, URL, or data in the input field (up to 2000 characters)
+2. The QR code will be automatically generated and displayed with real-time updates
+3. Use the "Copy" button to copy the QR code image directly to clipboard
+4. Use the "Download" button to save the QR code as a crisp 240×240 PNG image
 
 ## Project Structure
 
