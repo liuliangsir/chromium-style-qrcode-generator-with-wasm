@@ -73,7 +73,7 @@ This is a high-performance QR code generator developed with Rust and WebAssembly
 1. Enter any text, URL, or data in the input field (up to 2000 characters)
 2. The QR code will be automatically generated and displayed with real-time updates
 3. Use the "Copy" button to copy the QR code image directly to clipboard
-4. Use the "Download" button to save the QR code as a crisp 240×240 PNG image
+4. Use the "Download" button to save the QR code as a crisp 450×450 PNG image
 
 ## Project Structure
 
