@@ -1,1 +1,1 @@
-export const BASE = '/qrcode-generator-with-wasm/';
+export const BASE = '/chromium-style-qrcode-generator-with-wasm/';
