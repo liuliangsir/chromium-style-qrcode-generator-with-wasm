@@ -4,35 +4,41 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/qrcode-generator-with-wasm/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Code Generator With Wasm</title>
-    <script type="module" crossorigin src="/qrcode-generator-with-wasm/assets/index-DR_AkTfj.js"></script>
-    <link rel="stylesheet" crossorigin href="/qrcode-generator-with-wasm/assets/index-CNjA3Yxz.css">
+    <meta name="color-scheme" content="light" />
+    <title>QR Code Generator</title>
+    <!-- Preload critical resources for better performance -->
+    <link rel="preload" href="/qrcode-generator-with-wasm/assets/qrcode_generator_with_wasm-Cp3rYCb6.js" as="script" />
+    <link rel="preload" href="/qrcode-generator-with-wasm/assets/qrcode_generator_with_wasm_bg-HKghsyP4.wasm" as="fetch" type="application/wasm" crossorigin />
+    <script type="module" crossorigin src="/qrcode-generator-with-wasm/assets/index-CD-zbFjJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/qrcode-generator-with-wasm/assets/index-DpzLMkmM.css">
   </head>
   <body>
     <div class="bubble-container">
-      <h2>QR Code Generator</h2>
+      <!-- Title matching Chromium's IDS_BROWSER_SHARING_QR_CODE_DIALOG_TITLE -->
+      <h2>QR code</h2>
+
+      <!-- QR code display area with border and background matching Chromium -->
       <div class="qr-code-area">
-        <canvas id="qrCanvas" width="370" height="370"></canvas>
-        <div
-          id="centerErrorLabel"
-          class="error-label center-error"
-          style="display: none"
-        ></div>
+        <canvas id="qrCanvas" width="240" height="240"></canvas>
+        <div id="centerErrorLabel" class="error-label center-error hidden">Could not generate QR code. Please try again.</div>
       </div>
+
+      <!-- Input field matching Chromium's textfield with accessibility -->
       <input
         type="text"
         id="urlInput"
         placeholder="Enter URL or text"
         aria-label="URL or text to encode"
+        maxlength="2000"
       />
-      <div
-        id="bottomErrorLabel"
-        class="error-label bottom-error"
-        style="display: none"
-      ></div>
+
+      <!-- Bottom error for input too long, matching Chromium's behavior -->
+      <div id="bottomErrorLabel" class="error-label bottom-error hidden">Input is too long. Please shorten the text to 2000 characters or less.</div>
+
+      <!-- Button container with tooltip and buttons, matching Chromium's layout -->
       <div class="button-container">
         <span class="tooltip" title="Generates a QR code for the entered text."
-          >ℹ️</span
+          >ⓘ</span
         >
         <div class="spacer"></div>
         <button id="copyButton" disabled>Copy</button>
