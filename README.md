@@ -7,8 +7,8 @@ This is a high-performance QR code generator developed with Rust and WebAssembly
 - ⚡️ **High Performance**: Utilizing Rust and WebAssembly for high-speed QR code generation
 - 🔄 **Real-time Preview**: Instantly updates QR codes as input changes
 - 📋 **Smart Copy Function**: Copies QR code images directly to clipboard (with text fallback)
-- 💾 **Perfect Downloads**: Downloads QR codes as crisp 240x240 pixel PNG images
-- 🦖 **Chromium-Style Dino**: Supports dinosaur center images with transparent backgrounds
+- 💾 **Perfect Downloads**: Downloads QR codes as crisp 450×450 pixel PNG images
+- 🦖 **Chromium-Style Dino**: Supports dinosaur center images with white backgrounds
 - 📱 **Responsive Design**: Adapts to different device screen sizes
 - ✨ **High DPI Support**: Crystal clear rendering on retina and high-DPI displays
 - 🎯 **Chromium Compliance**: Pixel-perfect implementation matching Chrome's QR generator
