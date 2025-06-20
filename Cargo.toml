@@ -1,7 +1,7 @@
 [package]
-name = "qrcode-generator-with-wasm"
-version = "0.1.0"
-edition = "2021"
+name = "chromium-style-qrcode-generator-with-wasm"
+version = "1.0.0"
+edition = "2025"
 
 [lib]
 crate-type = ["cdylib"] # Critical for Wasm
