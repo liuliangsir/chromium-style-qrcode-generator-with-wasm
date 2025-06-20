@@ -5,7 +5,7 @@ import init, {
   ModuleStyle,
   LocatorStyle,
   generate_qr_code_with_options,
-} from './qrcode_generator_with_wasm.js';
+} from './chromium_style_qrcode_generator_with_wasm.js';
 
 const urlInput = document.getElementById('urlInput');
 const qrCanvas = document.getElementById('qrCanvas');

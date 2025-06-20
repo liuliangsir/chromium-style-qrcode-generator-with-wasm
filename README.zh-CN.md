@@ -1,4 +1,4 @@
-# QR 码生成器 (WebAssembly 版)
+# Chromium 风格 QR 码生成器 (WebAssembly 版)
 
 这是一个使用 Rust 和 WebAssembly 技术开发的高性能 QR 码生成器。该项目将 Rust 的高效能与 WebAssembly 的跨平台特性相结合，为 Web 应用提供快速、高效的 QR 码生成功能。
 
@@ -44,8 +44,8 @@
 1. 克隆仓库
 
    ```bash
-   git clone https://github.com/liuliangsir/qrcode-generator-with-wasm.git
-   cd qrcode-generator-with-wasm
+   git clone https://github.com/liuliangsir/chromium-style-qrcode-generator-with-wasm.git
+   cd chromium-style-qrcode-generator-with-wasm
    ```
 
 2. 构建 WebAssembly 模块

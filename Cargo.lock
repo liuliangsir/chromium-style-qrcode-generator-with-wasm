@@ -15,6 +15,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "chromium-style-qrcode-generator-with-wasm"
+version = "1.0.0"
+dependencies = [
+ "console_error_panic_hook",
+ "qr_code",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "console_error_panic_hook"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -50,15 +59,6 @@ name = "qr_code"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43d2564aae5faaf3acb512b35b8bcb9a298d9d8c72d181c598691d800ee78a00"
-
-[[package]]
-name = "qrcode-generator-with-wasm"
-version = "0.1.0"
-dependencies = [
- "console_error_panic_hook",
- "qr_code",
- "wasm-bindgen",
-]
 
 [[package]]
 name = "quote"

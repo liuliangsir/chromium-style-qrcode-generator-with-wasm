@@ -1,7 +1,7 @@
 {
-  "name": "qrcode-generator-with-wasm",
+  "name": "chromium-style-qrcode-generator-with-wasm",
   "version": "n/a",
-  "description": "A QR Code Generator using Rust and WebAssembly",
+  "description": "A Chromium Style QR Code Generator using Rust and WebAssembly",
   "main": "n/a",
   "scripts": {
     "dev": "vite",

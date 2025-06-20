@@ -1,4 +1,4 @@
-# QR Code Generator (WebAssembly Version)
+# Chromium Style QR Code Generator (WebAssembly Version)
 
 This is a high-performance QR code generator developed with Rust and WebAssembly technology. The project combines the efficiency of Rust with the cross-platform capabilities of WebAssembly to provide fast and efficient QR code generation for web applications.
 
@@ -44,8 +44,8 @@ This is a high-performance QR code generator developed with Rust and WebAssembly
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/liuliangsir/qrcode-generator-with-wasm.git
-   cd qrcode-generator-with-wasm
+   git clone https://github.com/liuliangsir/chromium-style-qrcode-generator-with-wasm.git
+   cd chromium-style-qrcode-generator-with-wasm
    ```
 
 2. Build the WebAssembly module
