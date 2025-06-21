@@ -1,0 +1,25 @@
+name: Preview Start
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  preview-start:
+    permissions:
+      issues: write
+      pull-requests: write
+    name: preview start
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Status Comment
+        uses: actions-cool/maintain-one-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            [Prepare Preview](https://preview-${{ github.event.number }}-chromium-style-qrcode-generator-with-wasm.surge.sh)
+            <!-- AUTO_PREVIEW_HOOK -->
+          body-include: <!-- AUTO_PREVIEW_HOOK -->
