@@ -34,6 +34,24 @@
       <!-- Bottom error for input too long, matching Chromium's behavior -->
       <div id="bottomErrorLabel" class="error-label bottom-error hidden">Input is too long. Please shorten the text to 2000 characters or less.</div>
 
+      <!-- Center image selection -->
+      <div class="center-image-section">
+        <label for="centerImageSelect" class="section-label">Center Image:</label>
+        <div class="center-image-controls">
+          <select id="centerImageSelect" class="center-image-select">
+            <option value="none">No Center Image</option>
+            <option value="dino" selected>Chromium Dino</option>
+            <option value="custom">Custom Image</option>
+          </select>
+          <input type="file" id="customImageInput" accept="image/*" class="custom-image-input hidden" />
+          <button id="customImageButton" class="custom-image-button hidden">Choose Image</button>
+        </div>
+        <div id="customImagePreview" class="custom-image-preview hidden">
+          <img id="customImageImg" alt="Custom center image preview" />
+          <button id="removeCustomImage" class="remove-custom-image">×</button>
+        </div>
+      </div>
+
       <!-- Button container with tooltip and buttons, matching Chromium's layout -->
       <div class="button-container">
         <span class="tooltip" title="Generates a QR code for the entered text."

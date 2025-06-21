@@ -13,6 +13,12 @@ const centerErrorLabel = document.getElementById('centerErrorLabel');
 const bottomErrorLabel = document.getElementById('bottomErrorLabel');
 const copyButton = document.getElementById('copyButton');
 const downloadButton = document.getElementById('downloadButton');
+const centerImageSelect = document.getElementById('centerImageSelect');
+const customImageInput = document.getElementById('customImageInput');
+const customImageButton = document.getElementById('customImageButton');
+const customImagePreview = document.getElementById('customImagePreview');
+const customImageImg = document.getElementById('customImageImg');
+const removeCustomImageButton = document.getElementById('removeCustomImage');
 
 const ctx = qrCanvas.getContext('2d');
 const moduleColor = '#000000'; // Black
@@ -82,6 +88,10 @@ const kDinoBody = [
 let currentQrData = null;
 let currentQrSize = 0;
 let currentOriginalSize = 0; // Track original size without quiet zone
+
+// Center image state
+let customCenterImage = null; // Will store the loaded custom image
+let centerImageType = 'dino'; // 'none', 'dino', or 'custom'
 
 // --- Error Handling ---
 const errorMessages = {
@@ -347,8 +357,22 @@ function drawRoundRect(ctx, x, y, width, height, radius, fillStyle) {
   ctx.fill();
 }
 
-// Draw center image (dino implementation matching Chromium exactly)
+// Draw center image (supports different center image types)
 function drawCenterImage(ctx, canvasBounds, paintBackground, modulePixelSize) {
+  if (centerImageType === 'none') {
+    // No center image
+    return;
+  } else if (centerImageType === 'dino') {
+    // Draw Chromium dino
+    drawDinoImage(ctx, canvasBounds, paintBackground, modulePixelSize);
+  } else if (centerImageType === 'custom' && customCenterImage) {
+    // Draw custom image
+    drawCustomImage(ctx, canvasBounds, paintBackground, modulePixelSize);
+  }
+}
+
+// Draw Chromium dino (extracted from original drawCenterImage)
+function drawDinoImage(ctx, canvasBounds, paintBackground, modulePixelSize) {
   // Calculate dino size exactly like Chromium's DrawDino function
   // In Chromium: DrawDino(&canvas, bitmap_bounds, kDinoTileSizePixels, 2, paint_black, paint_white);
   // But we need to scale these values based on our actual module size vs Chromium's 10px
@@ -366,6 +390,42 @@ function drawCenterImage(ctx, canvasBounds, paintBackground, modulePixelSize) {
     dinoHeightPx,
     dinoBorderPx,
     paintBackground, // Pass white background color
+    modulePixelSize
+  );
+}
+
+// Draw custom image
+function drawCustomImage(ctx, canvasBounds, paintBackground, modulePixelSize) {
+  if (!customCenterImage) return;
+  
+  // Calculate appropriate size for custom image (similar to dino sizing but adjustable)
+  const chromiumModuleSize = 10;
+  const scaleFactor = modulePixelSize / chromiumModuleSize;
+  const maxImageSize = Math.min(canvasBounds.width, canvasBounds.height) * 0.25; // Max 25% of canvas
+  
+  // Calculate aspect ratio preserving size
+  const imageAspect = customCenterImage.width / customCenterImage.height;
+  let imageWidth, imageHeight;
+  
+  if (imageAspect > 1) {
+    // Wide image
+    imageWidth = Math.min(maxImageSize, customCenterImage.width * scaleFactor);
+    imageHeight = imageWidth / imageAspect;
+  } else {
+    // Tall or square image
+    imageHeight = Math.min(maxImageSize, customCenterImage.height * scaleFactor);
+    imageWidth = imageHeight * imageAspect;
+  }
+  
+  const borderPx = Math.round(2 * scaleFactor);
+  
+  paintCustomCenterImage(
+    ctx,
+    canvasBounds,
+    imageWidth,
+    imageHeight,
+    borderPx,
+    paintBackground,
     modulePixelSize
   );
 }
@@ -475,6 +535,61 @@ function drawDinoPixelByPixel(ctx, destX, destY, destWidth, destHeight) {
   drawPixelData(kDinoBody, kDinoBodyHeight, kDinoHeadHeight);
 }
 
+// Paint custom center image
+function paintCustomCenterImage(
+  ctx,
+  canvasBounds,
+  widthPx,
+  heightPx,
+  borderPx,
+  paintBackground,
+  modulePixelSize = MODULE_SIZE_PIXELS
+) {
+  // Validation
+  if (
+    canvasBounds.width / 2 < widthPx + borderPx ||
+    canvasBounds.height / 2 < heightPx + borderPx
+  ) {
+    console.warn('Custom center image too large for canvas bounds');
+    return;
+  }
+
+  // Calculate position (center the image)
+  let destX = (canvasBounds.width - widthPx) / 2;
+  let destY = (canvasBounds.height - heightPx) / 2;
+
+  // Clear background area (similar to dino implementation)
+  const backgroundLeft =
+    Math.floor((destX - borderPx) / modulePixelSize) * modulePixelSize;
+  const backgroundTop =
+    Math.floor((destY - borderPx) / modulePixelSize) * modulePixelSize;
+  const backgroundRight =
+    Math.ceil((destX + widthPx + borderPx) / modulePixelSize) * modulePixelSize;
+  const backgroundBottom =
+    Math.ceil((destY + heightPx + borderPx) / modulePixelSize) * modulePixelSize;
+
+  // Draw white background
+  ctx.fillStyle = paintBackground.color;
+  ctx.fillRect(backgroundLeft, backgroundTop, 
+               backgroundRight - backgroundLeft, 
+               backgroundBottom - backgroundTop);
+
+  // Center the image within the background area
+  const deltaX = Math.round(
+    (backgroundLeft + backgroundRight) / 2 - (destX + widthPx / 2)
+  );
+  const deltaY = Math.round(
+    (backgroundTop + backgroundBottom) / 2 - (destY + heightPx / 2)
+  );
+  destX += deltaX;
+  destY += deltaY;
+
+  // Draw the custom image
+  if (customCenterImage) {
+    ctx.drawImage(customCenterImage, destX, destY, widthPx, heightPx);
+  }
+}
+
 // --- Actions ---
 async function generateQRCode() {
   const inputText = urlInput.value.trim();
@@ -495,12 +610,21 @@ async function generateQRCode() {
   }
 
   try {
+    // Determine center image option based on user selection
+    let centerImageOption;
+    if (centerImageType === 'none') {
+      centerImageOption = CenterImage.NoCenterImage;
+    } else {
+      // Use Dino for both dino and custom, since the actual rendering is handled in JavaScript
+      centerImageOption = CenterImage.Dino;
+    }
+
     // Use the Chromium-style options exactly matching the Android implementation
     const result = generate_qr_code_with_options(
       inputText,
       ModuleStyle.Circles, // Data modules as circles (kCircles)
       LocatorStyle.Rounded, // Rounded locators (kRounded)
-      CenterImage.Dino, // Dino center image (kDino)
+      centerImageOption, // Dynamic center image option
       QuietZone.WillBeAddedByClient // Match Android bridge layer behavior
     );
 
@@ -719,22 +843,103 @@ function renderQRCodeAtSize(ctx, targetSize, pixelData, size) {
   drawCenterImage(ctx, canvasBounds, paintWhite, modulePixelSize);
 }
 
-// --- Initialization ---
-async function run() {
-  // Initialize the Wasm module
-  await init();
-  console.log('Wasm module initialized.');
-
-  // Add event listeners
-  urlInput.addEventListener('input', generateQRCode);
-  copyButton.addEventListener('click', copyInputText);
-  downloadButton.addEventListener('click', downloadQRCode);
-
-  // Set default URL for testing (matches qrcode.png)
-  urlInput.value = 'https://avg.163.com';
-
-  // Initial generation
+// --- Center Image Handling ---
+function handleCenterImageChange() {
+  const selectedValue = centerImageSelect.value;
+  centerImageType = selectedValue;
+  
+  // Show/hide custom image controls
+  if (selectedValue === 'custom') {
+    customImageButton.classList.remove('hidden');
+  } else {
+    customImageButton.classList.add('hidden');
+    customImageInput.classList.add('hidden');
+  }
+  
+  // Regenerate QR code with new center image setting
   generateQRCode();
 }
 
-run();
+function handleCustomImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Validate file type
+  if (!file.type.startsWith('image/')) {
+    alert('Please select an image file.');
+    return;
+  }
+  
+  // Validate file size (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Image file is too large. Please select an image smaller than 5MB.');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Validate image dimensions (reasonable limits)
+      if (img.width > 2000 || img.height > 2000) {
+        alert('Image is too large. Please select an image smaller than 2000x2000 pixels.');
+        return;
+      }
+      
+      customCenterImage = img;
+      
+      // Show preview
+      customImageImg.src = e.target.result;
+      customImagePreview.classList.remove('hidden');
+      
+      // Regenerate QR code
+      generateQRCode();
+    };
+    img.onerror = function() {
+      alert('Failed to load image. Please try a different image.');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeCustomImage() {
+  customCenterImage = null;
+  customImagePreview.classList.add('hidden');
+  customImageInput.value = '';
+  generateQRCode();
+}
+
+// --- Event Listeners ---
+// Existing event listeners
+urlInput.addEventListener('input', generateQRCode);
+copyButton.addEventListener('click', async () => {
+  try {
+    await copyInputText();
+  } catch (error) {
+    console.warn('Canvas copy failed, trying text fallback:', error);
+    fallbackCopyText();
+  }
+});
+downloadButton.addEventListener('click', downloadQRCode);
+
+// New event listeners for center image functionality
+centerImageSelect.addEventListener('change', handleCenterImageChange);
+customImageButton.addEventListener('click', () => customImageInput.click());
+customImageInput.addEventListener('change', handleCustomImageUpload);
+removeCustomImageButton.addEventListener('click', removeCustomImage);
+
+// Initialize the application
+async function initApp() {
+  // Initialize WebAssembly module
+  await init();
+  
+  // Set default URL value
+  urlInput.value = 'https://avg.163.com';
+  
+  // Generate initial QR code with default value
+  generateQRCode();
+}
+
+// Initialize
+initApp();
